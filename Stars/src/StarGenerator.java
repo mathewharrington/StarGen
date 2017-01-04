@@ -12,7 +12,7 @@ public class StarGenerator {
 	private static int MAX;
 	private static int SMALL_STAR = 1;
 	private static int MEDIUM_STAR = 3;
-	private static int LARGE_STAR = 5;
+	private static int LARGE_STAR = 4;
 	private static Color SMALL_COLOR = 	new Color(167, 238, 253);
 	private static Color MEDIUM_COLOR = new Color(208, 226, 236);
 	private static Color LARGE_COLOR = 	new Color(217, 248, 255);
