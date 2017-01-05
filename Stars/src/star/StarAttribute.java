@@ -13,6 +13,9 @@ public class StarAttribute {
 	public static final Color LARGE_COLOR = new Color(217, 248, 255);
 	public static final Color SKY_COLOR = new Color(19, 22, 24);
 	
+	public static final double INITIAL_PROB = -0.9;
+	public static final double DUSTING_PROB = -0.7;
+	
 	public StarAttribute() {
 		
 	}
