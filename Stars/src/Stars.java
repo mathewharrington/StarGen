@@ -1,9 +1,9 @@
-import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
 import star.Star;
+import star.StarAttribute;
 
 public class Stars extends JPanel {
 
@@ -12,9 +12,12 @@ public class Stars extends JPanel {
 	public Stars(Star[][] stars) {
 		this.stars = stars;
 		this.setVisible(false);
-		this.setBackground(new Color(19,22,24));
+		this.setBackground(StarAttribute.SKY_COLOR);
 	}
 	
+	/**
+	 * Used in the first few rounds of generation for testing.
+	 */
 	public void printStarsToConsole()
 	{
 		for(int i = 0; i < stars.length; i++)
@@ -36,11 +39,14 @@ public class Stars extends JPanel {
 	}
 	
 	@Override 
+	/**
+	 * Draws the stars in the JPanel, smallest stars (size of 1) are drawn with
+	 * drawLine(), the rest or drawn with fillOval().
+	 */
 	public void paint(Graphics g)
 	{
 		super.paint(g);
 		
-		//g.setColor(Color.WHITE);
 		for(int i = 0 ; i < stars.length; i++)
 		{
 			for(int j = 0; j < stars[i].length; j++)
@@ -48,7 +54,7 @@ public class Stars extends JPanel {
 				if(stars[i][j].isVisible())
 				{
 					g.setColor(stars[i][j].getColor());
-					if(stars[i][j].getSize() == 1)
+					if(stars[i][j].getSize() == StarAttribute.SMALL_SIZE)
 						g.drawLine(i, j, i, j);
 					else
 						g.fillOval(i, j, stars[i][j].getSize(), stars[i][j].getSize());
