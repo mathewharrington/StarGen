@@ -7,17 +7,7 @@ public class Driver {
 	
 	public static void main(String[] args) {
 
-		// set the look and feel
-		try 
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} 
-		catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) 
-		{
-			System.out.println("Exception with GUI setup");
-			e.printStackTrace();
-		}
+		setupUI();
 		
 		MainView view = new MainView(WINDOW_WIDTH, WINDOW_HEIGHT);
 		StarGenerator starGen = new StarGenerator(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -41,4 +31,19 @@ public class Driver {
 		view.setVisible(true);
 		stars.paintStars();
 	}	
+	
+	private static void setupUI()
+	{
+		// set the look and feel
+		try 
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} 
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) 
+		{
+			System.out.println("Exception with GUI setup");
+			e.printStackTrace();
+		}
+	}
 }
