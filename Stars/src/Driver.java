@@ -42,7 +42,6 @@ public class Driver {
 		catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) 
 		{
-			System.out.println("Exception with GUI setup");
 			e.printStackTrace();
 		}
 	}
