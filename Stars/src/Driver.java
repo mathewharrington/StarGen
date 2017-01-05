@@ -34,7 +34,6 @@ public class Driver {
 	
 	private static void setupUI()
 	{
-		// set the look and feel
 		try 
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
