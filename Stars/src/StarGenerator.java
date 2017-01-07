@@ -86,6 +86,10 @@ public class StarGenerator {
 	 * the distance between the new star and the original, the direction is chosen
 	 * at random for now.
 	 * 
+	 * OpenSimplex noise returns a mean of zero and a standard deviation of 1, 
+	 * so to use this for distance in terms of pixels we need need to map the
+	 * returned value using a given mean and standard deviation. 
+	 * 
 	 * @param mean the average number of pixels to have between stars.
 	 * @param stdDeviation the desired standard deviation to apply to the noise
 	 */
