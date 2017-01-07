@@ -15,12 +15,11 @@ public class Driver {
 		// initial generation
 		starGen.generateInitial();
 		
-     		// second pass cluster generation
-		starGen.generateCluster(15);
-		starGen.generateCluster(10);
-		starGen.generateCluster(25);
-		starGen.generateCluster(6);
-		starGen.generateCluster(60);
+     	// second pass cluster generation
+		starGen.buildCluster(10, 9);
+		starGen.buildCluster(16, 15);
+		starGen.buildCluster(25, 24);
+		starGen.buildCluster(50, 49);
 		
 		// final dusting
 		starGen.generateDusting();
