@@ -104,10 +104,10 @@ public class StarGenerator {
 					// how many pixels next star will be from current
 					numSpaces = NOISE.eval(i, j);
 					
-					// adjust to given standard deviation
+					// stretch to given standard deviation
 					numSpaces *= stdDeviation;
 					
-					// adjust to given mean
+					// shift to given mean
 					numSpaces += mean;
 					
 					// obtain half value
