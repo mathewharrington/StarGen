@@ -21,7 +21,7 @@ public class StarGenerator {
 	}
 	
 	/**
-	 * Initialises the sky with new stars.
+	 * Initialises the sky with new stars, not visible by default.
 	 */
 	private void initSky()
 	{
@@ -56,8 +56,8 @@ public class StarGenerator {
 	
 	/**
 	 * Uses simplex noise to generate 'stars', if noise value is less than
-	 * given desnisty value we turn make it visible. First round generated stars
-	 * are set to a slightly larger size, other smaller stars will be generated 
+	 * given probability/desnisty value it is made visible. First round generated 
+	 * stars are set to a slightly larger size, other smaller stars will be generated 
 	 * around these larger ones.
 	 * 
 	 * @param probability double between -1 and 1, lower = less probability.
@@ -78,91 +78,122 @@ public class StarGenerator {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Attempts to generate clusters of stars be using simplex noise to add more
-	 * stars surrounding an initial star. A temporary copy of the star array is
-	 * used to iterate and additions are added directly to the original star
-	 * array.
+	 * stars surrounding an initial star. OpenSimplex noise is used to determine
+	 * the distance between the new star and the original, the direction is chosen
+	 * at random for now.
 	 * 
-	 * @param density integer representing the required density, how close to 
-	 * the initial star the next should be formed.
+	 * @param mean the average number of pixels to have between stars.
+	 * @param stdDeviation the desired standard deviation to apply to the noise
 	 */
-	public void generateCluster(int density)
+	public void buildCluster(double mean, double stdDeviation)
 	{
 		Star[][] tmpPixels = deepCopyStarMatrix(STARS);
+		Double numSpaces, halfNumSpaces;
+		int direction;
 		
 		for(int i = 0; i < tmpPixels.length; i++)
 		{
-			for(int j = 0; j < tmpPixels[i].length; j++)
+			for(int j = 0;j < tmpPixels[i].length; j++)
 			{
 				if(tmpPixels[i][j].isVisible())
 				{
-					double d = ThreadLocalRandom.current().nextInt(0, MAX + 1);
-					double n = NOISE.eval(i, j, d);
-					n = round(n, 2);
+					// how many pixels next star will be from current
+					numSpaces = NOISE.eval(i, j);
 					
-					// up left
-					if(n < -0.75)
-					{
-						if((i - density) > 0 && (j - density) > 0)
-							initStar(STARS[i-density][j-density], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);					
-					}
-						
-					// down right
-					else if(n < -0.5)
-					{
-						if((j + density) <= STARS[i].length - density && (i + density) <= STARS.length - density)
-							initStar(STARS[i+density][j+density], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
-					}
-						
-					// down left
-					else if(n < -0.25)
-					{
-						if((j - density) > 0 && (i + density) <= STARS.length - density)
-							initStar(STARS[i+density][j-density], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);
-					}
-						
-					// up right
-					else if(n < 0)
-					{
-						if((i - density) > 0 && (j + density) <= STARS[i].length - density)
-							initStar(STARS[i-density][j+density], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);
-					}
+					// adjust to given standard deviation
+					numSpaces *= stdDeviation;
 					
-					// up left
-					else if(n < 0.25)
+					// adjust to given mean
+					numSpaces += mean;
+					
+					// obtain half value
+					halfNumSpaces = numSpaces / 2;
+					
+					
+					// round result to two decimal places
+					numSpaces = round(numSpaces, 1);
+					
+					// x and y axis coords use integers
+					int inumSpaces = numSpaces.intValue();
+					int ihalfNumSpaces = halfNumSpaces.intValue();
+					
+					// choose direction
+					direction = ThreadLocalRandom.current().nextInt(1, 9);
+					
+					switch(direction)
 					{
-						if((i - density) > 0 && (j - density) > 0)
-							initStar(STARS[i-density][j-density], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
-					}
+						// up up left
+						case 1:
+							if((i - inumSpaces) > 0 && (j - ihalfNumSpaces) > 0)
+							{
+								initStar(STARS[i - inumSpaces][j - ihalfNumSpaces], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);
+							}
+							break;
 						
-					// down right
-					else if(n < 0.5)
-					{
-						if((j + density) <= STARS[i].length - density && (i + density) <= STARS.length - density)
-							initStar(STARS[i+density][j+density], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);
-					}
+						// left left up
+						case 2:
+							if((i - ihalfNumSpaces) > 0 && (j - inumSpaces) > 0)
+							{
+								initStar(STARS[i - ihalfNumSpaces][j - inumSpaces], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
+							}
+							break;
 						
-					// up right
-					else if(n < 0.75)
-					{
-						if((i - density) > 0 && (j + density) <= STARS[i].length - density)
-							initStar(STARS[i-density][j+density], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
-					}
+						// up up right
+						case 3:
+							if((i - inumSpaces) > 0 && (j + ihalfNumSpaces) < tmpPixels[i].length)
+							{
+								initStar(STARS[i - inumSpaces][j + ihalfNumSpaces], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
+							}
+							break;
 						
-					// down left
-					else if(n < 1)
-					{
-						if((j - density) > 0 && (i + density) <= STARS.length - density)
-							initStar(STARS[i+density][j-density], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
+						// right right up
+						case 4:
+							if((i - ihalfNumSpaces) > 0 && (j + inumSpaces) < tmpPixels[i].length)
+							{
+								initStar(STARS[i - ihalfNumSpaces][j + inumSpaces], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
+							}
+							break;
+						
+						// down down right
+						case 5:
+							if((i + inumSpaces) < tmpPixels.length && (j + ihalfNumSpaces) < tmpPixels[i].length)
+							{
+								initStar(STARS[i + inumSpaces][j + ihalfNumSpaces], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
+							}
+							break;
+						
+						// right right down
+						case 6:
+							if((i + ihalfNumSpaces) < tmpPixels.length && (j + inumSpaces) < tmpPixels[i].length)
+							{
+								initStar(STARS[i + ihalfNumSpaces][j + inumSpaces], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);
+							}
+							break;
+						
+						// down down left
+						case 7:
+							if((i + inumSpaces) < tmpPixels.length && (j - ihalfNumSpaces) > 0)
+							{
+								initStar(STARS[i + inumSpaces][j - ihalfNumSpaces], StarAttribute.SMALL_SIZE, StarAttribute.SMALL_COLOR);
+							}
+							break;
+						
+						// left left down
+						case 8:
+							if((i + ihalfNumSpaces) < tmpPixels.length && (j - inumSpaces) > 0)
+							{
+								initStar(STARS[i + ihalfNumSpaces][j - inumSpaces], StarAttribute.MEDIUM_SIZE, StarAttribute.MEDIUM_COLOR);
+							}
+							break;
 					}
 				}
 			}
 		}
 	}
-
 	
 	/**
 	 * Rounds a double to given number of decimal places.
