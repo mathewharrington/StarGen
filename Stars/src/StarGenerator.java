@@ -81,14 +81,9 @@ public class StarGenerator {
 
 
 	/**
-	 * Attempts to generate clusters of stars be using simplex noise to add more
-	 * stars surrounding an initial star. OpenSimplex noise is used to determine
-	 * the distance between the new star and the original, the direction is chosen
-	 * at random for now.
-	 * 
-	 * OpenSimplex noise returns a mean of zero and a standard deviation of 1, 
-	 * so to use this for distance in terms of pixels we need need to map the
-	 * returned value using a given mean and standard deviation. 
+	 * Generates clusters of stars using simplex noise.
+	 * OpenSimplex noise is used to determine the distance between the new star 
+	 * and the original, the direction random for now.
 	 * 
 	 * @param mean the average number of pixels to have between stars.
 	 * @param stdDeviation the desired standard deviation to apply to the noise
@@ -108,11 +103,7 @@ public class StarGenerator {
 					// how many pixels next star will be from current
 					numSpaces = NOISE.eval(i, j);
 					
-					// stretch to given standard deviation
-					numSpaces *= stdDeviation;
-					
-					// shift to given mean
-					numSpaces += mean;
+					numSpaces = map(numSpaces, mean, stdDeviation);
 					
 					// obtain half value
 					halfNumSpaces = numSpaces / 2;
@@ -199,6 +190,32 @@ public class StarGenerator {
 		}
 	}
 	
+	
+	/**
+	 * OpenSimplex noise returns a mean of zero and a standard deviation of 1, 
+	 * so to use this for distance in terms of pixels we need need to map the
+	 * returned value using a given mean and standard deviation. 
+	 * 
+	 * Maps value returned from OpenSimplexNoise eval() to more usable
+	 * number by adjusting the mean and standard deviation.
+	 * 
+	 * @param noiseVal the value returned from OpenSimplexNoise eval()
+	 * @param mean the amount to shift mean
+	 * @param stdDeviation the required adjustment to the standard deviation
+	 * @return the noise value mapped to more usable number
+	 */
+	private double map(double noiseVal, double mean, double stdDeviation)
+	{
+		// stretch to given standard deviation
+		noiseVal *= stdDeviation;
+		
+		// shift to given mean
+		noiseVal += mean;
+		
+		return noiseVal;
+	}
+	
+	
 	/**
 	 * Rounds a double to given number of decimal places.
 	 * 
@@ -206,7 +223,7 @@ public class StarGenerator {
 	 * @param places an integer representing required number of decimal places
 	 * @return the rounded double
 	 */
-	public static double round(double value, int places) {
+	private double round(double value, int places) {
 	    if (places < 0) 
 	    		throw new IllegalArgumentException();
 
