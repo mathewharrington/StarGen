@@ -1,5 +1,5 @@
 # StarGen
-Pseudo random star scene generation with Java Swing.
+Pseudo random star scene generation with Java + Swing.
 ## What
 Generates a night sky scene filled with a natural-looking/alien distribution of stars using Swing.
 
