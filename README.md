@@ -12,3 +12,5 @@ Using OpenSimplexNoise it creates clusters of 'stars' over a matrix of pixels an
 
 ![screenshot](https://raw.githubusercontent.com/mathewharrington/StarGen/master/Stars/results/StarGen_2.png)
 
+## TODO
+Increase number of pixels used to represent a star, for example a large star could have a glow effect by using more than one pixel and multiple colours to represent it, this would affect cluster generation as it is now though.
