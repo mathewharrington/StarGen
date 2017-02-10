@@ -251,7 +251,7 @@ public class StarGenerator {
 	
 	/**
 	 * Makes a deep copy of given matrix, quickly put together for task at hand,
-	 * should be made generic and places into proper class.
+	 * should be made generic and place into proper class.
 	 * 
 	 * @param src the source array
 	 * @return a copy of the source array
