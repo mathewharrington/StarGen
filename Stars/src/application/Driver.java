@@ -2,7 +2,6 @@ package application;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import star.NebGen;
 import star.StarGenerator;
 
 public class Driver {
