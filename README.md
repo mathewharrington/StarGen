@@ -4,7 +4,7 @@ Pseudo random star scene generation with Java + Swing + Open Simplex Noise.
 Generates a night sky scene filled with a natural-looking/alien distribution of stars.
 
 ## How
-Using OpenSimplexNoise it creates clusters of 'stars' over a matrix of pixels and renders them on a JFrame. At this stage it's simple, bigger stars are brighter and a slightly different shade than smaller stars, they also attract more smaller stars. Clusters are built iteratively by adjusting a mean and standard deviation to determine distance between stars.
+Using OpenSimplexNoise the program creates clusters of 'stars' over a two-dimensional matrix of pixels and renders them on a JFrame. At this stage it's simple, bigger stars are brighter and a slightly different shade than smaller stars, they also attract more smaller stars. Clusters are built iteratively by adjusting a mean and standard deviation to determine distance between stars.
 
 ## Results
 ![screenshot](https://raw.githubusercontent.com/mathewharrington/StarGen/master/Stars/results/StarGen_1.png)
